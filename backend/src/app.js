@@ -21,6 +21,7 @@ app.use(fileUpload());
 // Configurar Body Parser
 
 app.use(cookieParser());
+app.use(cros());
 // app.use(
 //   cors({
 //     origin: FRONTEND_URL,
