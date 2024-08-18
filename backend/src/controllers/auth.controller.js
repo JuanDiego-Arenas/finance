@@ -6,6 +6,12 @@ export const register = async (req, res) => {
 	const { user_name, email, password } = req.body;
 
 	try {
+		const userFound = await User.findOne({ user_name });
+		if (userFound) return res.status(400).json(['El nombre de usuario ya existe']);
+
+		const emailFound = await User.findOne({ email });
+		if (emailFound) return res.status(400).json(['El correo ya está en uso']);
+
 		const passwordHash = await bcrypt.hash(password, 10);
 
 		const newUser = new User({
@@ -23,7 +29,7 @@ export const register = async (req, res) => {
 			email: userSaved.email,
 		});
 	} catch (error) {
-		res.status(500).json({ message: error.message });
+		res.status(500).json([error.message]);
 	}
 };
 
@@ -44,7 +50,7 @@ export const login = async (req, res) => {
 			message: 'Bienvenido',
 		});
 	} catch (error) {
-		res.status(500).json({ message: error.message });
+		res.status(500).json([error.message]);
 	}
 };
 
